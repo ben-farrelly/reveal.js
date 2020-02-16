@@ -50,9 +50,20 @@
 						While accessibility refers to those outisde of our usual biases, it is not limited to that.
 						Region locking of content is another example we're used to in NZ which is an example of inaccessibility,
 						we can't get access to the content.							
+
+						![Map without NZ](images/nz-not-on-the-map.png "NZ missing yet again") 
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## General misconceptions pt.2							
 						
-						Focussing on accessibility doesn't improve the experience of our typical users.
+						"Focussing on accessibility doesn't improve the experience of our typical users."
+						<br/><br/>
 						Hopefully by the end of this talk I would've changed your mind and proven than spending time on accessibility improves the UX for all.
+						<span class="fragment fade-in">
+							![Thumbs up man](images/thumbsup.jpg "Man with money and a thumb")
+						</span>
 					</textarea>
 				</section>
 				<section>
@@ -70,42 +81,51 @@
 						<textarea data-template>
 							## Perceivable
 							
-							Can users perceive the content? This helps us keep in mind that just because something is perceivable with one
-							sense, such as sight, that doesn't mean that all users can perceive it.
+							* Can users perceive the content?
+							* Do you perceive this with your good vision?
+
+							![Checklist man](images/man-inspecting-checklist.jpg "Man looking at checklist")
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Operable
 							
-							Can users use UI components and navigate the content? For example, something that requires a hover interaction
-							cannot be operated by someone who can't use a mouse or touch screen.
+							* Can users use UI components and navigate the content?
+							* Could a user trigger a hover animation only without a mouse?
+
+							![Man operating forklift](images/man-on-fork-lift.jpg "Man on forklift")
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Understandable
 							
-							Can users understand the content? Can users understand the interface and is it consistent enough to avoid
+							* Can users understand the content?
+							* Can users understand the interface and is it consistent enough to avoid
 							confusion?
+
+							![thinking man](images/old-man-thinking.jpg "Man having a think")
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Robust
 							
-							Can the content be consumed by a wide variety of user agents (browsers)? Does it work with assistive technology?
+							* Can the content be consumed by a wide variety of user agents (browsers)?
+							* Does it work with assistive technology?
+							![group on laptop](images/group-on-laptop.jpg "group using tool")
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Web AIM
 							
-							The WCAG guidelines are very comprehensive, to the point of being overwhelming. To help everyone get started
-							with working on accessibility, WebAIM (Web Accessibility In Mind) has distilled the guidelines down to a
+							* The WCAG guidelines are very comprehensive, to the point of being overwhelming.
+							* WebAIM (Web Accessibility In Mind) has distilled the guidelines down to a
 							checklist.
 
-							[WebAIM Checklist]: https://webaim.org/standards/wcag/checklist
+							* [WebAIM Checklist]: https://webaim.org/standards/wcag/checklist
 						</textarea>
 					</section>
 				</section>
@@ -113,23 +133,26 @@
 					<textarea data-template>
 						## How does this affect our implementation?
 
-						We need to work on the following three areas for implementation: Focus, Semantics and Styling.
+						We need to work on the following three areas for implementation: 
+						* Focus
+						* Semantics
+						* Styling
 
 					</textarea>
 				</section>
 				<section>
-					<section data-markdown>
+					<section data-markdown data-background-image="images/dark-keyboard.jpg" data-background-size="50px"
+						data-background-repeat="repeat">
 						<textarea data-template>
 							## Focus
 							
-							This covers everything that can be done with a keyboard rather than a mouse, controlling the browser’s focus.
+							* This covers everything that can be done with a keyboard rather than a mouse, controlling the browser’s focus.
 
-							As devs we can implement this in a couple ways.
-							Firstly, if we use the correct semantic HTML, we won’t need to do anything. E.g. Using `<button>` instead of `<a>` or
+							
+							* Firstly, if we use the correct semantic HTML, we won’t need to do anything. E.g. Using `<button>` instead of `<a>` or
 							`<div>` for buttons.
 
-							On top of this we can manage focus with tabindex.
-
+							* On top of this we can manage focus with tabindex.
 						</textarea>
 					</section>
 					<section data-markdown>
@@ -166,11 +189,41 @@
 						<textarea data-template>
 							## Focus pt.2
 							
-							DOM order is also very important for accessibility - we can move the DOM with CSS or JS, but many accessibility
-							users interact more directly with the DOM tree itself.
-							But not only do they interact with the DOM tree, they interact with the accessibility tree, which is based on the
-							DOM tree. To be explained more later.
+							DOM order is also very important for accessibility
+							
+							* We can move the DOM with CSS or JS, but many accessibility users interact more directly with the DOM tree itself.
+							* The previous examples worked purely because of the DOM order.
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Using tabindex
 
+							* `tabindex` can be used to make elements focusable that are not focusable by default.
+							
+							* With a couple examples we can easily show this behaviour
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							`tabindex=0` will introduce the element to the tab order
+							```
+							<p class="btn">This is not focusable</p>
+							<p class="btn" tabindex="0">But I am focusable</p>
+							```
+							<p class="btn" style="display: inline-block">This is not focusable</p>
+							<p class="btn" style="display: inline-block" tabindex="0">But I am focusable</p>
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							`tabindex=-1` takes the element out of the tab order
+							```
+							<button tabindex="-1">This is not focusable</button>
+							<button>But I am focusable</button>
+							```
+							<button class="btn" tabindex="-1">This is not focusable</button>
+							<button class="btn">But I am focusable</button>
 						</textarea>
 					</section>
 				</section>
@@ -179,10 +232,11 @@
 						<textarea data-template>
 							## Semantics
 
-							By using implicit or explicit semantics we provide information to tools that interact with the browser
-							in ways that we might not appreciate as able-bodied users.
+							* By using implicit or explicit semantics we provide information to tools that interact with the browser.
 
-							These semantics provide information for the accessibility tree.
+							* These semantics provide information for the accessibility tree.
+
+							![Semantics](images/hermoine.gif "Semantics are important")
 						</textarea>
 					</section>
 					<section data-markdown>
@@ -191,17 +245,17 @@
 
 							![Accessibility tree](images/accessibility-tree.png  "An Example of the accessibility tree")
 
-							This accessibility tree works with assistive technology to help describe the page to the user and aid them in
-							using the functions the page provides.
+							* The accessibility tree works with assistive technology to help describe the page to the user and aid them in
+							using the page.
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Assistive tech
 
-							The most common assistive technology we think of when it comes to web accessibility are screen readers.
+							* The most common assistive technology we think of when it comes to web accessibility are screen readers.
 
-							Here is a video of Victor Tsaran, a Technical Program Manager at Google, who is completely blind using a screen
+							* Here is a video of Victor Tsaran, a Technical Program Manager at Google, who is completely blind using a screen
 							reader.
 
 							<a href="http://www.youtube.com/watch?feature=player_embedded&v=QW_dUs9D1oQ" target="_blank"><img
@@ -213,13 +267,11 @@
 					</section>
 					<section data-markdown>
 						<textarea data-template>
-							The flow of assistive technology working with the accessibility tree:
+							#### The flow of assistive technology working with the accessibility tree:
 
-							1. An application exposes a semantic version of its UI to assistive technology via an
-							API.
-							2. The assistive technology may use the information it reads via the API to create an alternative user interface
-							presentation for the user.
-							3. The assistive technology may also allow the user to interact with the app in a different way.
+							1. Accessibility tree is exposed via an API.
+							2. Assistive tech parses the tree and builds up an alternate UI.
+							3. The alternate UI comes in many forms.
 							4. The assistive technology relays the user intent (such as "click") back to the app via the accessibility API.
 
 						</textarea>
@@ -228,23 +280,20 @@
 						<textarea data-template>
 							## How the accessibility tree is built
 
-							The browser converts the DOM tree into an accessibility tree using implicit semantic information that is held in
-							most of the DOM elements.
-							This comes from the native HTML elements used in the DOM that are recognized by the browser and works
-							predictably.
-
-							However, if we try to use a different element such as a `<div>` to construct a button we lose all of this implicit
-							information and then we have to include it ourselves.
+							* Browser converts the DOM tree into an accessibility tree from semantic information.
+							* Most of this data comes from HTML elements.
+							* However, we can extend the semantic information with `ARIA` attributes.
 						</textarea>
 					</section>
 					<section  data-markdown>
 						<textarea data-template>
 							## Main take home from this section
 
-							Please, please, please use semantic HTML elements.
+							* Please, please, please use semantic HTML elements.
 
-							What do I mean by this?
-							HTML5 introduced some new elements including `header`, `footer`, `nav`, `article`, `section`, `main`, and `aside`.
+							*What do I mean by this?*
+							* Use the correct element for the situation.
+							* Use the HTML5 introduced elements, which includes: `header`, `footer`, `nav`, `article`, `section`, `main`, and `aside`.
 						</textarea>
 					</section>
 				</section>
@@ -260,7 +309,7 @@
 						<textarea data-template>
 							## Styling focus
 							
-							We spent all this time previously making sure the focus works well, so we don't want to ruin it with our stylesbundleRenderer.renderToStream
+							Previously we spent time ensuring our elements are focusable.
 
 							Two general rules:
 							1. Don’t set `outline: 0` without re-setting it - this removes all focus styles.
@@ -269,41 +318,57 @@
 					</section>
 					<section data-markdown>
 						<textarea data-template>
+							## Example - bad focus style
+							```
+							<style>
+								.btn-bad {
+									outline-color: black;
+								}
+							</style>
+							<div tabindex="0" class="btn-bad">Try tab on me</div>
+							```
+							<style>
+								.btn-bad {
+									outline-color: black;
+								}
+							</style>
+							<div tabindex="0" class="btn-bad">Try tab on me</div>
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
 							## Colour contrast
 							
 							![Colour contrast example](images/colour-contrast.png  "Colour contrast example")
 							
-							WebAIM recommends a contrast ratio of 4.5:1.
-							For people that have visual impairment it’s recommended that this is as high as 7:1.
+							* WebAIM recommends a contrast ratio of 4.5:1.
+							* For people that have visual impairment it’s recommended that this is as high as 7:1.
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea  data-template>
 							## Multi-device responsiveness
 
-							Responsive design as a trend has not only made it easier for teams to manage developing websites for multiple
-							devices, it has also been a massive win for accessibility. By allowing our websites to be viewed on any device
-							size we also make our website able to be zoomed in on any device and still usable (hopefully).
+							* Responsive design as a trend has not only made it easier for teams to manage websites.
+							* Massive win for accessibility (Website is available and usable on *any* device).							
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Enabling responsiveness
 
-							The first thing we do with any project to enable responsiveness is to add the `<meta>` tag.
-							`<meta name="viewport" content="width=device-width, initial-scale=1.0">`
-							This will mean the browser will render the page at the device sensible width. This stops a mobile browser from
-							trying to render your website at a full desktop width.
+							* The first thing we do with any project is to enable responsiveness.
+							*```<meta name="viewport" content="width=device-width, initial-scale=1.0">```
+							* This stops a mobile browser from trying to render your website at a full desktop width, instead using the native width.
 						</textarea>
 					</section>
 					<section data-markdown>
 						<textarea data-template>
 							## Should I use absolute or relative units in CSS?
 
-							For fonts and line-height always use `em` or `rem`. This means that when the browser uses zoom the fonts
-							scale correctly.
-
-							For other parts of the page it is not as important, but always remember this for fonts.
+							* For fonts and line-height always use `em` or `rem`.
+							* This allow fonts to scale correctly if zoomed in on.
+							* Other styles do not have such a golden rule.
 						</textarea>
 					</section>
 				</section>
@@ -367,15 +432,21 @@
 						* Use `em` or `rem` for fonts
 						* Never use colour alone to convey information
 						* Use semantic HTML tags.
+						* Using `alt` with images effectively.
 					</textarea>
 				</section>
 				<section data-markdown>
 					<textarea data-template>
 						## Going further
 
-						* I didn't discuss ARIA anywhere near enough - could be an entire separate session
-						* Using `alt` with images effectively.
-						* Using `tabindex` to manage focus.
+						* I didn't discuss ARIA anywhere near enough - could be an entire separate session.
+						* Ensuring all content (including video) is accessible.
+						
+						Articles
+						* https://motherfuckingwebsite.com/
+						* http://mrmrs.cc/writing/the-veil-of-ignorance/
+						* https://developers.google.com/web/fundamentals/accessibility
+						* https://developer.mozilla.org/en-US/docs/Web/Accessibility
 					</textarea>
 				</section>
 			</div>
